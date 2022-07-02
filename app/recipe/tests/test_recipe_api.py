@@ -5,8 +5,7 @@ from decimal import Decimal
 from email.policy import default
 from django.contrib.auth import get_user_model
 from django.test import TestCase
-from django.urls import clear_script_prefix, reverse
-from yaml import serialize
+from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 from core.models import Recipe
@@ -43,18 +42,18 @@ class PublicRecipeAPITests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
-class PrivateRecipeApiTest(TestCase):
+class PrivateRecipeApiTests(TestCase):
     """Test authenticated API requsts"""
 
     def setUp(self):
         self.client = APIClient()
-        self.user = get_user_model().objects.create_uers(
+        self.user = get_user_model().objects.create_user(
             'user@example.com',
             'testpass123',
         )
-        self.clinet.force_authenticate(self.user)
+        self.client.force_authenticate(self.user)
 
-    def test_retrive_recipes(self):
+    def test_retrieve_recipes(self):
         """Test retrieving a list of recipes"""
         create_recipe(user = self.user)
         create_recipe(user = self.user)
@@ -73,7 +72,7 @@ class PrivateRecipeApiTest(TestCase):
             'password123',
         )
         create_recipe(user = other_user)
-        create_recipe(user=other_user)
+        create_recipe(user=self.user)
 
         res = self.client.get(RECIPES_URL)
 
