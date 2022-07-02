@@ -1,8 +1,7 @@
 """
 Serializers for the user API View
 """
-import email
-from xml.dom import ValidationErr
+import code
 from django.contrib.auth import(
     get_user_model,
     authenticate,
@@ -43,7 +42,7 @@ class AuthTokenSerializer(serializers.Serializer):
         )
         if not user:
             msg = _('Unable to authenticate with provided credentials')
-            raise serializers.ValidationErr(msg, code='authorization')
+            raise serializers.ValidationError(msg, code='authorization')
 
         attrs['user'] = user
         return attrs

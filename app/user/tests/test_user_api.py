@@ -1,8 +1,6 @@
 """
-Tests for the uer API
+Tests for the user API.
 """
-import email
-from termios import CREAD
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 from django.urls import reverse
@@ -46,7 +44,7 @@ class public_user_api_tests(TestCase):
         payload = {
             'email': 'test@example.com',
             'password': 'testpass123',
-            'name': 'Test Name'
+            'name': 'Test Name',
         }
         create_user(**payload)
         res = self.client.post(CREATE_USER_URL, payload)
@@ -58,7 +56,7 @@ class public_user_api_tests(TestCase):
         payload = {
             'email': 'test@example.com',
             'password': 'pw',
-            'name': 'Test Name'
+            'name': 'Test Name',
         }
         res = self.client.post(CREATE_USER_URL, payload)
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
@@ -101,4 +99,4 @@ class public_user_api_tests(TestCase):
         res = self.client.post(TOKEN_URL, payload)
 
         self.assertNotIn('token', res.data)
-        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQEST)
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
